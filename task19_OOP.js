@@ -24,6 +24,18 @@ taskTitle.innerText = "Task 19: OOP ";
 // Створюємо об'єкт Book
 
 console.log("Завдання: 1 ==============================");
+let Book = {
+  title: "Загальна Книга",
+  author: "Анонім",
+  pages: 0,
+  read() {
+    console.log(`Ви читаєте "${this.title}" від ${this.author}`);
+  },
+};
+console.log(Book);
+const book = Object.create(Book);
+console.log(Book.isPrototypeOf(book));
+Book.read();
 
 // Виводимо в консоль Об'єкт: Book
 
@@ -47,6 +59,11 @@ console.log("Завдання: 1 ==============================");
 // Додаємо властивість genre
 
 console.log("Завдання: 2 ==============================");
+let Novel = {};
+Novel = Object.create(Book);
+console.log(Novel);
+Novel.genre = "Новела";
+console.log(Object.getPrototypeOf(Novel));
 
 // Виводимо в консоль Об'єкт: Novel
 
@@ -73,6 +90,14 @@ console.log("Завдання: 3 ==============================");
 // Виводимо в консоль Об'єкт: Biography
 
 // Перевіримо чи являється Novel прототипом Biography та виведемо в консоль
+let Biography = {
+  title: "Загальна Біографія",
+  author: "Біограф",
+  pages: 200,
+};
+console.log(Biography);
+Biography = Object.create(Novel);
+console.log(Novel.isPrototypeOf(Biography));
 
 // 4. Інкапсуляція властивості та додання властивості
 /*
@@ -100,6 +125,29 @@ console.log("Завдання: 3 ==============================");
 // | info        | написана в 1915 році |
 
 console.log("Завдання: 4 ==============================");
+let ScienceBook = Object.create(Book);
+ScienceBook.title = "Фізика 101";
+ScienceBook.author = "Альберт Ейнштейн";
+
+console.log(ScienceBook);
+Object.defineProperty(ScienceBook, "info", {
+  value: "написана в 1915 році",
+  configurable: false,
+});
+
+Object.defineProperty(ScienceBook, "getInfo", {
+  get() {
+    return `Про книгу ${this.title}: ${this.info}`;
+  },
+  set(value) {
+    this.info = value;
+  },
+});
+
+console.log(ScienceBook.getInfo);
+const propertyDescriptor = Object.getOwnPropertyDescriptor(ScienceBook, "info");
+console.log(propertyDescriptor);
+
 // Виводимо в консоль властивість info
 
 // Виводимо в консоль налаштування властивости info
@@ -123,6 +171,15 @@ console.log("Завдання: 4 ==============================");
 // | author      | "Дж. Д. Джонс"             |
 
 console.log("Завдання: 5 ==============================");
+let Textbook = Object.create(ScienceBook);
+Textbook.title = "Фізика у Вищій Школі";
+Textbook.author = "Дж. Д. Джонс";
+Textbook.read = function () {
+  console.log(
+    `Ви читаєте підручник "${this.title}" від ${this.author}. ${this.info}`
+  );
+};
+Textbook.read();
 // Викликаємо функцію read об'єкту Textbook
 
 // 6. Абстракція: створення об'єкта з загальними властивостями
@@ -143,7 +200,6 @@ console.log("Завдання: 5 ==============================");
  */
 
 // Створюємо об'єкт Media
-
 /*
  * Об'єкт: Song
  * Властивості та функції наслідуються від об'єкта Media
@@ -159,4 +215,27 @@ console.log("Завдання: 5 ==============================");
 // | title       | "Загальна Пісня"       |
 
 console.log("Завдання: 6 ==============================");
+let Media = {
+  format: "Загальний Формат",
+  length: 0,
+  play() {
+    console.log(
+      `Зараз відтворюється медіа у форматі ${this.format} з тривалістю ${this.length} секунд`
+    );
+  },
+};
+let Song = Object.create(Media);
+Song.play();
+
+
+Song.artist = "Загальний Виконавець";
+Song.title = "Загальна Пісня";
+Song.play = function () {
+  console.log(
+    `Зараз відтворюється медіа у форматі ${this.format} з назвою ${this.title}, яку написав ${this.artist} з тривалістю ${this.length} секунд`
+  );
+};
+
+console.log("===SONG====");
+Song.play();
 // Викликаємо функцію play об'єкту Song
